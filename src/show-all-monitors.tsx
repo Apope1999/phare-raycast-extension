@@ -96,7 +96,21 @@ export default function Command() {
       ) : null}
       <List.Section title="Active Monitors">
         {monitors.map((monitor: Monitor) => {
-          const statusColor = monitor.status === "online" ? "#4ade80" : "#f87171";
+          let statusColor = "#a1a1aa"; // default gray
+          switch (monitor.status) {
+            case "fetching":
+              statusColor = "#38bdf8"; // blue
+              break;
+            case "online":
+              statusColor = "#4ade80"; // green
+              break;
+            case "offline":
+              statusColor = "#f87171"; // red
+              break;
+            case "partial":
+              statusColor = "#facc15"; // yellow
+              break;
+          }
           return (
             <List.Item
               key={monitor.id}
