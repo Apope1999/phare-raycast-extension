@@ -118,7 +118,6 @@ export default function Command() {
               title={monitor.name}
               detail={
                 <List.Item.Detail
-                  markdown={`### ${monitor.name}\n\n**Status:** ${monitor.status}\n\n**URL:** [${monitor.request.url}](${monitor.request.url})\n\n**Protocol:** ${monitor.protocol.toUpperCase()}\n\n**Method:** ${monitor.request.method}\n\n**Response Time:** ${monitor.response_time}ms\n\n**Regions:** ${monitor.regions.join(", ")}\n\n**Interval:** ${monitor.interval}s\n**Timeout:** ${monitor.timeout}ms\n\n**Incident Confirmations:** ${monitor.incident_confirmations}\n**Recovery Confirmations:** ${monitor.recovery_confirmations}\n\n**Follow Redirects:** ${monitor.request.follow_redirects ? "Yes" : "No"}\n**TLS Skip Verify:** ${monitor.request.tls_skip_verify ? "Yes" : "No"}\n\n**Success Assertions:**\n${monitor.success_assertions.map((a: any) => `- ${a.type} ${a.operator} ${a.value}`).join("\n")}\n\n**Created:** ${new Date(monitor.created_at).toLocaleString()}\n**Updated:** ${new Date(monitor.updated_at).toLocaleString()}`}
                   metadata={
                     <List.Item.Detail.Metadata>
                       <List.Item.Detail.Metadata.TagList title="Status">
