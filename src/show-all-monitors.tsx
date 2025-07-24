@@ -25,17 +25,32 @@ export default function Command() {
         return;
       }
       try {
-        const response = await fetch("https://api.phare.io/v1/monitors", {
+        const response = await fetch("https://api.phare.io/uptime/monitors", {
           headers: {
             Authorization: `Bearer ${phareApiKey}`,
             "Content-Type": "application/json",
           },
         });
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
+        const text = await response.text();
+        let data: any;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          setError(`Failed to parse JSON: ${text}`);
+          return;
         }
-        const data = (await response.json()) as { monitors: Monitor[] };
-        setMonitors(data.monitors || []);
+        if (!response.ok) {
+          setError(`API error: ${response.status}\n${JSON.stringify(data, null, 2)}`);
+          return;
+        }
+        // Use the 'data' array from the API response
+        if (!Array.isArray(data.data)) {
+          setError(`Unexpected API response: no 'data' array`);
+          return;
+        }
+        // Only show active (not paused) monitors
+        const activeMonitors = data.data.filter((m: any) => !m.paused);
+        setMonitors(activeMonitors);
       } catch (e: any) {
         setError(e.message || "Unknown error");
       } finally {
@@ -60,10 +75,10 @@ export default function Command() {
 
   return (
     <List isLoading={isLoading} searchBarPlaceholder="Search monitors...">
-      {monitors.map((monitor) => (
+      {monitors.map((monitor: any) => (
         <List.Item
           key={monitor.id}
-          icon={monitor.status === "up" ? Icon.CheckCircle : Icon.XMarkCircle}
+          icon={monitor.status === "online" ? Icon.CheckCircle : Icon.XMarkCircle}
           title={monitor.name}
           accessories={[{ text: monitor.status }]}
         />
