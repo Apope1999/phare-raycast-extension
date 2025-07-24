@@ -2,9 +2,25 @@ import { ActionPanel, Detail, List, Action, Icon, getPreferenceValues, openExten
 import { useEffect, useState } from "react";
 
 interface Monitor {
-  id: string;
+  id: number;
   name: string;
   status: string;
+  protocol: string;
+  request: {
+    url: string;
+    method: string;
+    tls_skip_verify: boolean;
+    follow_redirects: boolean;
+  };
+  interval: number;
+  timeout: number;
+  success_assertions: any[];
+  incident_confirmations: number;
+  recovery_confirmations: number;
+  regions: string[];
+  response_time: number;
+  updated_at: string;
+  created_at: string;
 }
 
 interface Preferences {
@@ -74,15 +90,52 @@ export default function Command() {
   }
 
   return (
-    <List isLoading={isLoading} searchBarPlaceholder="Search monitors...">
-      {monitors.map((monitor: any) => (
-        <List.Item
-          key={monitor.id}
-          icon={monitor.status === "online" ? Icon.CheckCircle : Icon.XMarkCircle}
-          title={monitor.name}
-          accessories={[{ text: monitor.status }]}
-        />
-      ))}
+    <List isLoading={isLoading} searchBarPlaceholder="Search monitors..." navigationTitle="Phare Monitors" isShowingDetail>
+      {monitors.length === 0 && !isLoading ? (
+        <List.EmptyView title="No active monitors found" />
+      ) : null}
+      <List.Section title="Active Monitors">
+        {monitors.map((monitor: Monitor) => {
+          const statusColor = monitor.status === "online" ? "#4ade80" : "#f87171";
+          return (
+            <List.Item
+              key={monitor.id}
+              icon={monitor.status === "online" ? Icon.CheckCircle : Icon.XMarkCircle}
+              title={monitor.name}
+              subtitle={monitor.request.url}
+              accessories={[
+                { tag: { value: monitor.status, color: statusColor }, tooltip: `Status: ${monitor.status}` },
+                { text: `${monitor.response_time}ms`, icon: Icon.Clock, tooltip: "Response Time" },
+                { text: monitor.protocol.toUpperCase(), icon: monitor.protocol === "https" ? Icon.Lock : Icon.Globe, tooltip: `Protocol: ${monitor.protocol}` },
+              ]}
+              detail={
+                <List.Item.Detail
+                  markdown={`### ${monitor.name}\n\n**Status:** ${monitor.status}\n\n**URL:** [${monitor.request.url}](${monitor.request.url})\n\n**Protocol:** ${monitor.protocol.toUpperCase()}\n\n**Method:** ${monitor.request.method}\n\n**Response Time:** ${monitor.response_time}ms\n\n**Regions:** ${monitor.regions.join(", ")}\n\n**Interval:** ${monitor.interval}s\n**Timeout:** ${monitor.timeout}ms\n\n**Incident Confirmations:** ${monitor.incident_confirmations}\n**Recovery Confirmations:** ${monitor.recovery_confirmations}\n\n**Follow Redirects:** ${monitor.request.follow_redirects ? "Yes" : "No"}\n**TLS Skip Verify:** ${monitor.request.tls_skip_verify ? "Yes" : "No"}\n\n**Success Assertions:**\n${monitor.success_assertions.map((a: any) => `- ${a.type} ${a.operator} ${a.value}`).join("\n")}\n\n**Created:** ${new Date(monitor.created_at).toLocaleString()}\n**Updated:** ${new Date(monitor.updated_at).toLocaleString()}`}
+                  metadata={
+                    <List.Item.Detail.Metadata>
+                      <List.Item.Detail.Metadata.Label title="Status" text={monitor.status} icon={monitor.status === "online" ? Icon.CheckCircle : Icon.XMarkCircle} />
+                      <List.Item.Detail.Metadata.Label title="Protocol" text={monitor.protocol.toUpperCase()} icon={monitor.protocol === "https" ? Icon.Lock : Icon.Globe} />
+                      <List.Item.Detail.Metadata.Label title="Method" text={monitor.request.method} />
+                      <List.Item.Detail.Metadata.Label title="URL" text={monitor.request.url} />
+                      <List.Item.Detail.Metadata.Label title="Response Time" text={`${monitor.response_time}ms`} icon={Icon.Clock} />
+                      <List.Item.Detail.Metadata.Label title="Regions" text={monitor.regions.join(", ")} />
+                      <List.Item.Detail.Metadata.Label title="Interval" text={`${monitor.interval}s`} />
+                      <List.Item.Detail.Metadata.Label title="Timeout" text={`${monitor.timeout}ms`} />
+                      <List.Item.Detail.Metadata.Label title="Incident Confirmations" text={String(monitor.incident_confirmations)} />
+                      <List.Item.Detail.Metadata.Label title="Recovery Confirmations" text={String(monitor.recovery_confirmations)} />
+                      <List.Item.Detail.Metadata.Label title="Follow Redirects" text={monitor.request.follow_redirects ? "Yes" : "No"} />
+                      <List.Item.Detail.Metadata.Label title="TLS Skip Verify" text={monitor.request.tls_skip_verify ? "Yes" : "No"} />
+                      <List.Item.Detail.Metadata.Label title="Success Assertions" text={monitor.success_assertions.map((a: any) => `${a.type} ${a.operator} ${a.value}`).join(", ")} />
+                      <List.Item.Detail.Metadata.Label title="Created" text={new Date(monitor.created_at).toLocaleString()} />
+                      <List.Item.Detail.Metadata.Label title="Updated" text={new Date(monitor.updated_at).toLocaleString()} />
+                    </List.Item.Detail.Metadata>
+                  }
+                />
+              }
+            />
+          );
+        })}
+      </List.Section>
     </List>
   );
 }
