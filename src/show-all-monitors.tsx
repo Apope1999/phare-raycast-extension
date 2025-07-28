@@ -247,6 +247,60 @@ export default function Command() {
                         url={`https://app.phare.io/uptime/monitors/${monitor.id}`}
                       />
                       <Action
+                        title="Pause Monitor"
+                        icon={Icon.Pause}
+                        shortcut={{ modifiers: ["cmd"], key: "p" }}
+                        onAction={async () => {
+                          try {
+                            const response = await fetch(
+                              `https://api.phare.io/uptime/monitors/${monitor.id}/pause`,
+                              {
+                                method: "POST",
+                                headers: {
+                                  Authorization: `Bearer ${phareApiKey}`,
+                                  "Content-Type": "application/json",
+                                },
+                              },
+                            );
+
+                            if (!response.ok) {
+                              const errorText = await response.text();
+                              let errorData;
+                              try {
+                                errorData = JSON.parse(errorText);
+                              } catch {
+                                errorData = { message: errorText };
+                              }
+                              throw new Error(
+                                `Failed to pause monitor: ${response.status} - ${errorData.message || "Unknown error"}`,
+                              );
+                            }
+
+                            await showToast({
+                              style: Toast.Style.Success,
+                              title: "Monitor Paused",
+                              message: `Successfully paused "${monitor.name}"`,
+                            });
+
+                            // Update the monitor status in local state
+                            setMonitors((prevMonitors) =>
+                              prevMonitors.map((m) =>
+                                m.id === monitor.id
+                                  ? { ...m, status: "paused" }
+                                  : m,
+                              ),
+                            );
+                          } catch (error: any) {
+                            await showToast({
+                              style: Toast.Style.Failure,
+                              title: "Pause Failed",
+                              message:
+                                error.message || "Failed to pause monitor",
+                            });
+                          }
+                        }}
+                      />
+                      <Action
                         title="Delete Monitor"
                         icon={Icon.Trash}
                         style={Action.Style.Destructive}
