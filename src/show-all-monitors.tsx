@@ -15,6 +15,8 @@ interface Monitor {
   id: number;
   name: string;
   status: string;
+  one_day_availability?: number;
+  seven_days_availability?: number;
   protocol: string;
   request: {
     url: string;
@@ -35,6 +37,13 @@ interface Monitor {
 
 interface Preferences {
   phareApiKey: string;
+}
+
+// Helper function to create emoji bar for availability percentage
+function createAvailabilityBar(percentage: number): string {
+  const filledBlocks = Math.round(percentage / 10); // 10 blocks = 100%
+  const emptyBlocks = 10 - filledBlocks;
+  return "🟩".repeat(filledBlocks) + "⬜".repeat(emptyBlocks);
 }
 
 export default function Command() {
@@ -161,6 +170,25 @@ export default function Command() {
                               color={statusColor}
                             />
                           </List.Item.Detail.Metadata.TagList>
+                          <List.Item.Detail.Metadata.Separator />
+                          <List.Item.Detail.Metadata.Label
+                            title="1 Day Availability"
+                            text={
+                              monitor.one_day_availability !== undefined
+                                ? `${monitor.one_day_availability.toFixed(4)}% ${createAvailabilityBar(monitor.one_day_availability)}`
+                                : "N/A ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜"
+                            }
+                            icon={Icon.Clock}
+                          />
+                          <List.Item.Detail.Metadata.Label
+                            title="7 Days Availability"
+                            text={
+                              monitor.seven_days_availability !== undefined
+                                ? `${monitor.seven_days_availability.toFixed(4)}% ${createAvailabilityBar(monitor.seven_days_availability)}`
+                                : "N/A ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜"
+                            }
+                            icon={Icon.Clock}
+                          />
                           <List.Item.Detail.Metadata.Separator />
                           <List.Item.Detail.Metadata.Label
                             title="Protocol"
