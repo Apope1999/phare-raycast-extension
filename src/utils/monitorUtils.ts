@@ -60,7 +60,6 @@ export function groupMonitorsByStatus(monitors: Monitor[]): {
     }
   });
 
-  // Remove empty sections
   Object.keys(grouped).forEach((key) => {
     if (grouped[key].length === 0) {
       delete grouped[key];

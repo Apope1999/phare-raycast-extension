@@ -13,7 +13,6 @@ export default function Command() {
     return <ErrorView error={error} />;
   }
 
-  // Group monitors by status for sections
   const groupedMonitors = groupMonitorsByStatus(monitors);
 
   return (
