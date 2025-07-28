@@ -246,6 +246,57 @@ export default function Command() {
                         title="Open Monitor in Browser"
                         url={`https://app.phare.io/uptime/monitors/${monitor.id}`}
                       />
+                      <Action
+                        title="Delete Monitor"
+                        icon={Icon.Trash}
+                        style={Action.Style.Destructive}
+                        shortcut={{ modifiers: ["cmd", "shift"], key: "d" }}
+                        onAction={async () => {
+                          try {
+                            const response = await fetch(
+                              `https://api.phare.io/uptime/monitors/${monitor.id}`,
+                              {
+                                method: "DELETE",
+                                headers: {
+                                  Authorization: `Bearer ${phareApiKey}`,
+                                  "Content-Type": "application/json",
+                                },
+                              },
+                            );
+
+                            if (!response.ok) {
+                              const errorText = await response.text();
+                              let errorData;
+                              try {
+                                errorData = JSON.parse(errorText);
+                              } catch {
+                                errorData = { message: errorText };
+                              }
+                              throw new Error(
+                                `Failed to delete monitor: ${response.status} - ${errorData.message || "Unknown error"}`,
+                              );
+                            }
+
+                            await showToast({
+                              style: Toast.Style.Success,
+                              title: "Monitor Deleted",
+                              message: `Successfully deleted "${monitor.name}"`,
+                            });
+
+                            // Remove the monitor from the local state
+                            setMonitors((prevMonitors) =>
+                              prevMonitors.filter((m) => m.id !== monitor.id),
+                            );
+                          } catch (error: any) {
+                            await showToast({
+                              style: Toast.Style.Failure,
+                              title: "Delete Failed",
+                              message:
+                                error.message || "Failed to delete monitor",
+                            });
+                          }
+                        }}
+                      />
                     </ActionPanel>
                   }
                 />
