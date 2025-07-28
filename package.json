@@ -13,7 +13,14 @@
       "description": "Shows all monitors and their current status.",
       "mode": "view"
     }
-  ],
+  ,
+    {
+      "name": "create-monitor",
+      "title": "Create Monitor",
+      "description": "Create a new monitor for a service.",
+      "mode": "no-view"
+    }
+      ],
   "preferences": [
     {
       "name": "phareApiKey",
