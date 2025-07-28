@@ -76,9 +76,8 @@ export default function Command() {
           setError(`Unexpected API response: no 'data' array`);
           return;
         }
-        // Only show active (not paused) monitors
-        const activeMonitors = data.data.filter((m: any) => !m.paused);
-        setMonitors(activeMonitors);
+        // Show all monitors (including paused ones)
+        setMonitors(data.data);
       } catch (e: any) {
         setError(e.message || "Unknown error");
       } finally {
