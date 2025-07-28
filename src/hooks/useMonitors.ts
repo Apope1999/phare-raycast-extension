@@ -12,9 +12,6 @@ export function useMonitors(apiKey: string) {
         "Content-Type": "application/json",
       },
       execute: !!apiKey,
-      onError: (error) => {
-        console.error("Failed to fetch monitors:", error);
-      },
     },
   );
 

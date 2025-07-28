@@ -14,8 +14,6 @@ export function useMonitorActions(apiKey: string) {
   });
 
   const pauseMonitor = async (monitorId: number, monitorName: string) => {
-    console.log(`Attempting to pause monitor ${monitorId}`);
-
     try {
       await mutate(
         fetch(`${API_BASE_URL}/monitors/${monitorId}/pause`, {
@@ -40,14 +38,12 @@ export function useMonitorActions(apiKey: string) {
         },
       );
 
-      console.log(`Successfully paused monitor ${monitorId}`);
       await showToast({
         style: Toast.Style.Success,
         title: "Monitor Paused",
         message: `Successfully paused "${monitorName}"`,
       });
     } catch (error: unknown) {
-      console.error(`Failed to pause monitor ${monitorId}:`, error);
       const errorMessage =
         error instanceof Error ? error.message : "Failed to pause monitor";
       await showToast({
@@ -60,8 +56,6 @@ export function useMonitorActions(apiKey: string) {
   };
 
   const resumeMonitor = async (monitorId: number, monitorName: string) => {
-    console.log(`Attempting to resume monitor ${monitorId}`);
-
     try {
       await mutate(
         fetch(`${API_BASE_URL}/monitors/${monitorId}/resume`, {
@@ -86,14 +80,12 @@ export function useMonitorActions(apiKey: string) {
         },
       );
 
-      console.log(`Successfully resumed monitor ${monitorId}`);
       await showToast({
         style: Toast.Style.Success,
         title: "Monitor Resumed",
         message: `Successfully resumed "${monitorName}"`,
       });
     } catch (error: unknown) {
-      console.error(`Failed to resume monitor ${monitorId}:`, error);
       const errorMessage =
         error instanceof Error ? error.message : "Failed to resume monitor";
       await showToast({
@@ -106,8 +98,6 @@ export function useMonitorActions(apiKey: string) {
   };
 
   const deleteMonitor = async (monitorId: number, monitorName: string) => {
-    console.log(`Attempting to delete monitor ${monitorId}`);
-
     try {
       await mutate(
         fetch(`${API_BASE_URL}/monitors/${monitorId}`, {
@@ -128,14 +118,12 @@ export function useMonitorActions(apiKey: string) {
         },
       );
 
-      console.log(`Successfully deleted monitor ${monitorId}`);
       await showToast({
         style: Toast.Style.Success,
         title: "Monitor Deleted",
         message: `Successfully deleted "${monitorName}"`,
       });
     } catch (error: unknown) {
-      console.error(`Failed to delete monitor ${monitorId}:`, error);
       const errorMessage =
         error instanceof Error ? error.message : "Failed to delete monitor";
       await showToast({
