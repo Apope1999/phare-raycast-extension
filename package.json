@@ -9,7 +9,7 @@
   "commands": [
     {
       "name": "show-all-monitors",
-      "title": "Show all monitors",
+      "title": "Show All Monitors",
       "description": "Shows all monitors and their current status.",
       "mode": "view"
     }

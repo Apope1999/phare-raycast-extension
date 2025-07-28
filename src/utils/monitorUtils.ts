@@ -37,8 +37,14 @@ export function groupMonitorsByStatus(monitors: Monitor[]): {
   return grouped;
 }
 
-export function formatSuccessAssertions(assertions: any[]): string {
+interface Assertion {
+  type: string;
+  operator: string;
+  value: string | number;
+}
+
+export function formatSuccessAssertions(assertions: Assertion[]): string {
   return assertions
-    .map((a: any) => `${a.type} ${a.operator} ${a.value}`)
+    .map((a: Assertion) => `${a.type} ${a.operator} ${a.value}`)
     .join(", ");
 }

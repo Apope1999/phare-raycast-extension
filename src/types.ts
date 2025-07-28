@@ -11,7 +11,7 @@ export interface Monitor {
   };
   interval: number;
   timeout: number;
-  success_assertions: any[];
+  success_assertions: unknown[];
   incident_confirmations: number;
   recovery_confirmations: number;
   regions: string[];

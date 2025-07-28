@@ -7,8 +7,7 @@ import { ErrorView } from "./components/ErrorView";
 
 export default function Command() {
   const { phareApiKey } = getPreferenceValues<Preferences>();
-  const { monitors, isLoading, error, updateMonitorStatus, removeMonitor } =
-    useMonitors(phareApiKey);
+  const { monitors, isLoading, error } = useMonitors(phareApiKey);
 
   if (error) {
     return <ErrorView error={error} />;
@@ -35,8 +34,6 @@ export default function Command() {
                 key={`${monitor.id}-${monitor.status}`}
                 monitor={monitor}
                 apiKey={phareApiKey}
-                onStatusUpdate={updateMonitorStatus}
-                onRemove={removeMonitor}
               />
             ))}
           </List.Section>
