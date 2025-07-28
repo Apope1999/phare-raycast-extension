@@ -240,6 +240,14 @@ export default function Command() {
                       }
                     />
                   }
+                  actions={
+                    <ActionPanel>
+                      <Action.OpenInBrowser
+                        title="Open Monitor in Browser"
+                        url={`https://app.phare.io/uptime/monitors/${monitor.id}`}
+                      />
+                    </ActionPanel>
+                  }
                 />
               );
             })}
