@@ -1,6 +1,7 @@
 import { ActionPanel, Action, Icon } from "@raycast/api";
 import { Monitor } from "../types";
 import { useMonitorActions } from "../hooks/useMonitorActions";
+import { getEffectiveStatus } from "../utils/monitorUtils";
 
 interface MonitorActionsProps {
   monitor: Monitor;
@@ -15,13 +16,15 @@ export function MonitorActions({ monitor, apiKey }: MonitorActionsProps) {
   const handleResume = () => resumeMonitor(monitor.id, monitor.name);
   const handleDelete = () => deleteMonitor(monitor.id, monitor.name);
 
+  const effectiveStatus = getEffectiveStatus(monitor);
+
   return (
     <ActionPanel>
       <Action.OpenInBrowser
         title="Open Monitor in Browser"
         url={`https://app.phare.io/uptime/monitors/${monitor.id}`}
       />
-      {monitor.status !== "paused" ? (
+      {effectiveStatus !== "paused" ? (
         <Action
           title="Pause Monitor"
           icon={Icon.Pause}
