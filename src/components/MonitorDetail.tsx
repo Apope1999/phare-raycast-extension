@@ -1,20 +1,26 @@
 import { List, Icon } from "@raycast/api";
 import { Monitor } from "../types";
-import { formatSuccessAssertions, getStatusColor } from "../utils/monitorUtils";
+import {
+  formatSuccessAssertions,
+  getStatusColor,
+  getEffectiveStatus,
+} from "../utils/monitorUtils";
 
 interface MonitorDetailProps {
   monitor: Monitor;
 }
 
 export function MonitorDetail({ monitor }: MonitorDetailProps) {
+  const effectiveStatus = getEffectiveStatus(monitor);
+
   return (
     <List.Item.Detail
       metadata={
         <List.Item.Detail.Metadata>
           <List.Item.Detail.Metadata.TagList title="Status">
             <List.Item.Detail.Metadata.TagList.Item
-              text={monitor.status}
-              color={getStatusColor(monitor.status)}
+              text={effectiveStatus}
+              color={getStatusColor(effectiveStatus)}
             />
           </List.Item.Detail.Metadata.TagList>
           <List.Item.Detail.Metadata.Separator />

@@ -32,7 +32,7 @@ export function useMonitorActions(apiKey: string) {
               ...data,
               data: data.data.map((monitor) =>
                 monitor.id === monitorId
-                  ? { ...monitor, status: "paused" }
+                  ? { ...monitor, paused: true }
                   : monitor,
               ),
             };
@@ -78,7 +78,7 @@ export function useMonitorActions(apiKey: string) {
               ...data,
               data: data.data.map((monitor) =>
                 monitor.id === monitorId
-                  ? { ...monitor, status: "online" }
+                  ? { ...monitor, paused: false }
                   : monitor,
               ),
             };

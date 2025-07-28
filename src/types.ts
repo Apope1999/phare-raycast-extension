@@ -1,7 +1,14 @@
+export interface Assertion {
+  type: string;
+  operator: string;
+  value: string | number;
+}
+
 export interface Monitor {
   id: number;
   name: string;
   status: string;
+  paused: boolean;
   protocol: string;
   request: {
     url: string;
@@ -11,7 +18,7 @@ export interface Monitor {
   };
   interval: number;
   timeout: number;
-  success_assertions: unknown[];
+  success_assertions: Assertion[];
   incident_confirmations: number;
   recovery_confirmations: number;
   regions: string[];

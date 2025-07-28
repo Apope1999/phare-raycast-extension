@@ -1,4 +1,11 @@
-import { Monitor } from "../types";
+import { Monitor, Assertion } from "../types";
+
+export function getEffectiveStatus(monitor: Monitor): string {
+  if (monitor.paused) {
+    return "paused";
+  }
+  return monitor.status;
+}
 
 export function getStatusColor(status: string): string {
   switch (status) {
@@ -10,6 +17,8 @@ export function getStatusColor(status: string): string {
       return "#f87171"; // red
     case "partial":
       return "#facc15"; // yellow
+    case "paused":
+      return "#a1a1aa"; // gray
     default:
       return "#a1a1aa"; // default gray
   }
@@ -21,26 +30,44 @@ export function groupMonitorsByStatus(monitors: Monitor[]): {
   const grouped: { [key: string]: Monitor[] } = {
     Online: [],
     Offline: [],
+    Paused: [],
+    Partial: [],
+    Fetching: [],
     Other: [],
   };
 
   monitors.forEach((monitor) => {
-    if (monitor.status === "online") {
-      grouped.Online.push(monitor);
-    } else if (monitor.status === "offline") {
-      grouped.Offline.push(monitor);
-    } else {
-      grouped.Other.push(monitor);
+    const effectiveStatus = getEffectiveStatus(monitor);
+    switch (effectiveStatus) {
+      case "online":
+        grouped.Online.push(monitor);
+        break;
+      case "offline":
+        grouped.Offline.push(monitor);
+        break;
+      case "paused":
+        grouped.Paused.push(monitor);
+        break;
+      case "partial":
+        grouped.Partial.push(monitor);
+        break;
+      case "fetching":
+        grouped.Fetching.push(monitor);
+        break;
+      default:
+        grouped.Other.push(monitor);
+        break;
+    }
+  });
+
+  // Remove empty sections
+  Object.keys(grouped).forEach((key) => {
+    if (grouped[key].length === 0) {
+      delete grouped[key];
     }
   });
 
   return grouped;
-}
-
-interface Assertion {
-  type: string;
-  operator: string;
-  value: string | number;
 }
 
 export function formatSuccessAssertions(assertions: Assertion[]): string {
