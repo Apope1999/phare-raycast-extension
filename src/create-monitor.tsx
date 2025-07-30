@@ -181,19 +181,29 @@ export default function Command() {
         <Form.TagPicker.Item value="sa-bra-gru" title="São Paulo, Brazil" />
       </Form.TagPicker>
 
-      <Form.TextField
+      <Form.Dropdown
         id="incidentConfirmations"
         title="Incident Confirmations"
-        placeholder="1"
         defaultValue="1"
-      />
+      >
+        <Form.Dropdown.Item value="1" title="1 confirmation" />
+        <Form.Dropdown.Item value="2" title="2 confirmations" />
+        <Form.Dropdown.Item value="3" title="3 confirmations" />
+        <Form.Dropdown.Item value="4" title="4 confirmations" />
+        <Form.Dropdown.Item value="5" title="5 confirmations" />
+      </Form.Dropdown>
 
-      <Form.TextField
+      <Form.Dropdown
         id="recoveryConfirmations"
         title="Recovery Confirmations"
-        placeholder="1"
         defaultValue="1"
-      />
+      >
+        <Form.Dropdown.Item value="1" title="1 confirmation" />
+        <Form.Dropdown.Item value="2" title="2 confirmations" />
+        <Form.Dropdown.Item value="3" title="3 confirmations" />
+        <Form.Dropdown.Item value="4" title="4 confirmations" />
+        <Form.Dropdown.Item value="5" title="5 confirmations" />
+      </Form.Dropdown>
 
       <Form.TextField
         id="statusCodeAssertion"
