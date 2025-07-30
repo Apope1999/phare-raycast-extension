@@ -15,7 +15,7 @@ interface CreateMonitorForm {
   method: string;
   interval: string;
   timeout: string;
-  regions: string;
+  regions: string[];
   incidentConfirmations: string;
   recoveryConfirmations: string;
   followRedirects: boolean;
@@ -77,10 +77,7 @@ export default function Command() {
         ],
         incident_confirmations: parseInt(values.incidentConfirmations),
         recovery_confirmations: parseInt(values.recoveryConfirmations),
-        regions: values.regions
-          .split(",")
-          .map((region) => region.trim())
-          .filter(Boolean),
+        regions: values.regions,
       };
 
       const response = await fetch(`${API_BASE_URL}/monitors`, {
@@ -138,10 +135,7 @@ export default function Command() {
 
       <Form.Dropdown id="method" title="HTTP Method" defaultValue="GET">
         <Form.Dropdown.Item value="GET" title="GET" />
-        <Form.Dropdown.Item value="POST" title="POST" />
         <Form.Dropdown.Item value="HEAD" title="HEAD" />
-        <Form.Dropdown.Item value="PUT" title="PUT" />
-        <Form.Dropdown.Item value="DELETE" title="DELETE" />
       </Form.Dropdown>
 
       <Form.TextField
