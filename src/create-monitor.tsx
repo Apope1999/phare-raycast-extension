@@ -151,12 +151,26 @@ export default function Command() {
         defaultValue="60"
       />
 
-      <Form.TextField
+      <Form.Dropdown
         id="timeout"
         title="Timeout (milliseconds)"
-        placeholder="7000"
         defaultValue="7000"
-      />
+      >
+        <Form.Dropdown.Item value="1000" title="1 second" />
+        <Form.Dropdown.Item value="2000" title="2 seconds" />
+        <Form.Dropdown.Item value="3000" title="3 seconds" />
+        <Form.Dropdown.Item value="4000" title="4 seconds" />
+        <Form.Dropdown.Item value="5000" title="5 seconds" />
+        <Form.Dropdown.Item value="6000" title="6 seconds" />
+        <Form.Dropdown.Item value="7000" title="7 seconds" />
+        <Form.Dropdown.Item value="8000" title="8 seconds" />
+        <Form.Dropdown.Item value="9000" title="9 seconds" />
+        <Form.Dropdown.Item value="10000" title="10 seconds" />
+        <Form.Dropdown.Item value="15000" title="15 seconds" />
+        <Form.Dropdown.Item value="20000" title="20 seconds" />
+        <Form.Dropdown.Item value="25000" title="25 seconds" />
+        <Form.Dropdown.Item value="30000" title="30 seconds" />
+      </Form.Dropdown>
 
       <Form.TagPicker
         id="regions"
