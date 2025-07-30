@@ -1,4 +1,4 @@
-import { List, getPreferenceValues } from "@raycast/api";
+import { List, getPreferenceValues, Icon } from "@raycast/api";
 import { Preferences } from "./types";
 import { useMonitors } from "./hooks/useMonitors";
 import { groupMonitorsByStatus } from "./utils/monitorUtils";
@@ -23,7 +23,11 @@ export default function Command() {
       isShowingDetail
     >
       {monitors.length === 0 && !isLoading ? (
-        <List.EmptyView title="No active monitors found" />
+        <List.EmptyView
+          title="No active monitors found"
+          icon={Icon.EyeDisabled}
+          description="Create your first monitor to start tracking your services"
+        />
       ) : null}
       {Object.entries(groupedMonitors).map(([section, items]) =>
         items.length > 0 ? (
