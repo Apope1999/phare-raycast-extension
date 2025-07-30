@@ -138,12 +138,17 @@ export default function Command() {
         <Form.Dropdown.Item value="HEAD" title="HEAD" />
       </Form.Dropdown>
 
-      <Form.TextField
-        id="interval"
-        title="Check Interval (seconds)"
-        placeholder="60"
-        defaultValue="60"
-      />
+      <Form.Dropdown id="interval" title="Check Interval" defaultValue="60">
+        <Form.Dropdown.Item value="30" title="30 seconds" />
+        <Form.Dropdown.Item value="60" title="1 minute" />
+        <Form.Dropdown.Item value="120" title="2 minutes" />
+        <Form.Dropdown.Item value="180" title="3 minutes" />
+        <Form.Dropdown.Item value="300" title="5 minutes" />
+        <Form.Dropdown.Item value="600" title="10 minutes" />
+        <Form.Dropdown.Item value="900" title="15 minutes" />
+        <Form.Dropdown.Item value="1800" title="30 minutes" />
+        <Form.Dropdown.Item value="3600" title="1 hour" />
+      </Form.Dropdown>
 
       <Form.Dropdown id="timeout" title="Timeout (seconds)" defaultValue="7000">
         <Form.Dropdown.Item value="1000" title="1 second" />
