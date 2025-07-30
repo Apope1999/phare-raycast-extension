@@ -1,6 +1,6 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "phare.io-uptime",
+  "name": "phare-io-uptime",
   "title": "Phare.io Uptime",
   "description": "Manages and shows uptime status for services using Phare.io",
   "icon": "phare.io-black.png",
