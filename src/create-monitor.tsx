@@ -41,6 +41,15 @@ export default function Command() {
       return;
     }
 
+    if (!values.name || !values.url) {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Required Fields Missing",
+        message: "Please fill in the monitor name and URL",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -59,15 +68,13 @@ export default function Command() {
         },
         interval: parseInt(values.interval),
         timeout: parseInt(values.timeout),
-        success_assertions: values.statusCodeAssertion
-          ? [
-              {
-                type: "status_code",
-                operator: "in",
-                value: values.statusCodeAssertion,
-              },
-            ]
-          : [],
+        success_assertions: [
+          {
+            type: "status_code",
+            operator: "in",
+            value: values.statusCodeAssertion || "2xx,30x",
+          },
+        ],
         incident_confirmations: parseInt(values.incidentConfirmations),
         recovery_confirmations: parseInt(values.recoveryConfirmations),
         regions: values.regions
@@ -125,15 +132,9 @@ export default function Command() {
         id="name"
         title="Monitor Name"
         placeholder="My Website Monitor"
-        required
       />
 
-      <Form.TextField
-        id="url"
-        title="URL"
-        placeholder="https://example.com"
-        required
-      />
+      <Form.TextField id="url" title="URL" placeholder="https://example.com" />
 
       <Form.Dropdown id="method" title="HTTP Method" defaultValue="GET">
         <Form.Dropdown.Item value="GET" title="GET" />
@@ -148,7 +149,6 @@ export default function Command() {
         title="Check Interval (seconds)"
         placeholder="60"
         defaultValue="60"
-        required
       />
 
       <Form.TextField
@@ -156,7 +156,6 @@ export default function Command() {
         title="Timeout (milliseconds)"
         placeholder="7000"
         defaultValue="7000"
-        required
       />
 
       <Form.TextField
@@ -172,7 +171,6 @@ export default function Command() {
         title="Incident Confirmations"
         placeholder="1"
         defaultValue="1"
-        required
       />
 
       <Form.TextField
@@ -180,7 +178,6 @@ export default function Command() {
         title="Recovery Confirmations"
         placeholder="1"
         defaultValue="1"
-        required
       />
 
       <Form.TextField
@@ -207,12 +204,14 @@ export default function Command() {
       <Form.Checkbox
         id="followRedirects"
         title="Follow Redirects"
+        label="Follow Redirects"
         defaultValue={true}
       />
 
       <Form.Checkbox
         id="tlsSkipVerify"
         title="Skip TLS Verification"
+        label="Skip TLS Verification"
         defaultValue={false}
       />
     </Form>
