@@ -5,6 +5,10 @@
   "description": "Manages and shows uptime status for services using Phare.io",
   "icon": "phare.io-black.png",
   "author": "ApopeOS",
+  "categories": [
+    "Data",
+    "Web"
+  ],
   "license": "MIT",
   "commands": [
     {
