@@ -1,10 +1,11 @@
 import { useFetch } from "@raycast/utils";
 import { showToast, Toast } from "@raycast/api";
 import { Monitor } from "../types";
-
-const API_BASE_URL = "https://api.phare.io/uptime";
+import { API_BASE_URL } from "../constants";
+import { useState } from "react";
 
 export function useMonitorActions(apiKey: string) {
+  const [isLoading, setIsLoading] = useState(false);
   const { mutate } = useFetch<{ data: Monitor[] }>(`${API_BASE_URL}/monitors`, {
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -14,6 +15,7 @@ export function useMonitorActions(apiKey: string) {
   });
 
   const createMonitor = async (monitorData: Record<string, unknown>) => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/monitors`, {
         method: "POST",
@@ -71,10 +73,13 @@ export function useMonitorActions(apiKey: string) {
         });
       }
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const pauseMonitor = async (monitorId: number, monitorName: string) => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/monitors/${monitorId}/pause`,
@@ -131,10 +136,13 @@ export function useMonitorActions(apiKey: string) {
         });
       }
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const resumeMonitor = async (monitorId: number, monitorName: string) => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/monitors/${monitorId}/resume`,
@@ -193,10 +201,13 @@ export function useMonitorActions(apiKey: string) {
         });
       }
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const deleteMonitor = async (monitorId: number, monitorName: string) => {
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/monitors/${monitorId}`, {
         method: "DELETE",
@@ -248,6 +259,8 @@ export function useMonitorActions(apiKey: string) {
         });
       }
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -256,5 +269,6 @@ export function useMonitorActions(apiKey: string) {
     pauseMonitor,
     resumeMonitor,
     deleteMonitor,
+    isLoading,
   };
 }

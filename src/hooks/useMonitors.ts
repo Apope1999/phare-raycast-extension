@@ -1,7 +1,6 @@
 import { useFetch } from "@raycast/utils";
 import { Monitor } from "../types";
-
-const API_BASE_URL = "https://api.phare.io/uptime";
+import { API_BASE_URL } from "../constants";
 
 export function useMonitors(apiKey: string) {
   const { data, isLoading, error } = useFetch<{ data: Monitor[] }>(

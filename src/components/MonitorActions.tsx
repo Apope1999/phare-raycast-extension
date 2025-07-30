@@ -9,12 +9,23 @@ interface MonitorActionsProps {
 }
 
 export function MonitorActions({ monitor, apiKey }: MonitorActionsProps) {
-  const { pauseMonitor, resumeMonitor, deleteMonitor } =
+  const { pauseMonitor, resumeMonitor, deleteMonitor, isLoading } =
     useMonitorActions(apiKey);
 
-  const handlePause = () => pauseMonitor(monitor.id, monitor.name);
-  const handleResume = () => resumeMonitor(monitor.id, monitor.name);
-  const handleDelete = () => deleteMonitor(monitor.id, monitor.name);
+  const handlePause = async () => {
+    if (isLoading) return;
+    await pauseMonitor(monitor.id, monitor.name);
+  };
+
+  const handleResume = async () => {
+    if (isLoading) return;
+    await resumeMonitor(monitor.id, monitor.name);
+  };
+
+  const handleDelete = async () => {
+    if (isLoading) return;
+    await deleteMonitor(monitor.id, monitor.name);
+  };
 
   const effectiveStatus = getEffectiveStatus(monitor);
 

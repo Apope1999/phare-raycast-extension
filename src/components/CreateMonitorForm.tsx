@@ -1,5 +1,5 @@
 import { Form } from "@raycast/api";
-import { FORM_OPTIONS } from "../utils/monitorUtils";
+import { FORM_OPTIONS } from "../constants";
 
 interface CreateMonitorFormProps {
   itemProps: {
