@@ -34,3 +34,19 @@ export interface Preferences {
 export interface ApiResponse<T> {
   data: T;
 }
+
+export interface CreateMonitorForm {
+  name: string;
+  url: string;
+  method: string;
+  interval: string;
+  timeout: string;
+  regions: string[];
+  incidentConfirmations: string;
+  recoveryConfirmations: string;
+  followRedirects: boolean;
+  tlsSkipVerify: boolean;
+  keyword: string;
+  userAgentSecret: string;
+  statusCodeAssertion: string;
+}

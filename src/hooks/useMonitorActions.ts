@@ -13,6 +13,57 @@ export function useMonitorActions(apiKey: string) {
     execute: false, // We don't want to fetch here, just use the mutate function
   });
 
+  const createMonitor = async (monitorData: Record<string, unknown>) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/monitors`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(monitorData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message ||
+            `HTTP ${response.status}: ${response.statusText}`,
+        );
+      }
+
+      const monitor = await response.json();
+
+      // Optimistically add the new monitor to the list
+      await mutate(Promise.resolve({ data: [monitor] }), {
+        optimisticUpdate: (data) => {
+          if (!data?.data) return data;
+          return {
+            ...data,
+            data: [...data.data, monitor],
+          };
+        },
+      });
+
+      await showToast({
+        style: Toast.Style.Success,
+        title: "Monitor Created",
+        message: `Successfully created monitor "${monitor.name}"`,
+      });
+
+      return monitor;
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to Create Monitor",
+        message: errorMessage,
+      });
+      throw error;
+    }
+  };
+
   const pauseMonitor = async (monitorId: number, monitorName: string) => {
     try {
       await mutate(
@@ -136,6 +187,7 @@ export function useMonitorActions(apiKey: string) {
   };
 
   return {
+    createMonitor,
     pauseMonitor,
     resumeMonitor,
     deleteMonitor,
