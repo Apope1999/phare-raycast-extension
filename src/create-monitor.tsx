@@ -158,13 +158,24 @@ export default function Command() {
         defaultValue="7000"
       />
 
-      <Form.TextField
+      <Form.TagPicker
         id="regions"
-        title="Regions (comma-separated)"
-        placeholder="as-jpn-hnd,us-nyc-nyc"
-        defaultValue="as-jpn-hnd"
-        info="Available regions: as-jpn-hnd, us-nyc-nyc, eu-fra-fra, etc."
-      />
+        title="Regions"
+        defaultValue={["as-jpn-hnd"]}
+        info="Select one or more regions to monitor from"
+      >
+        <Form.TagPicker.Item value="as-jpn-hnd" title="Tokyo, Japan" />
+        <Form.TagPicker.Item value="as-sgp-sin" title="Singapore" />
+        <Form.TagPicker.Item value="as-tha-bkk" title="Bangkok, Thailand" />
+        <Form.TagPicker.Item value="eu-deu-fra" title="Frankfurt, Germany" />
+        <Form.TagPicker.Item value="eu-gbr-lhr" title="London, UK" />
+        <Form.TagPicker.Item value="eu-swe-arn" title="Stockholm, Sweden" />
+        <Form.TagPicker.Item value="na-mex-mex" title="Mexico City, Mexico" />
+        <Form.TagPicker.Item value="na-usa-iad" title="Washington DC, USA" />
+        <Form.TagPicker.Item value="na-usa-sea" title="Seattle, USA" />
+        <Form.TagPicker.Item value="oc-aus-syd" title="Sydney, Australia" />
+        <Form.TagPicker.Item value="sa-bra-gru" title="São Paulo, Brazil" />
+      </Form.TagPicker>
 
       <Form.TextField
         id="incidentConfirmations"
