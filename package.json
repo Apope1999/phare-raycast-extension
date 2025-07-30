@@ -3,7 +3,7 @@
   "name": "phare.io-uptime",
   "title": "Phare.io Uptime",
   "description": "Manages and shows uptime status for services using Phare.io",
-  "icon": "phare.io-icon.png",
+  "icon": "phare.io-black.png",
   "author": "ApopeOS",
   "license": "MIT",
   "commands": [
