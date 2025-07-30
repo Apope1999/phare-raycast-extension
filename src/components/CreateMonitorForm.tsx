@@ -36,12 +36,7 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
         {...itemProps.url}
       />
 
-      <Form.Dropdown
-        id="method"
-        title="HTTP Method"
-        defaultValue="GET"
-        {...itemProps.method}
-      >
+      <Form.Dropdown id="method" title="HTTP Method" {...itemProps.method}>
         {FORM_OPTIONS.methods.map((method) => (
           <Form.Dropdown.Item
             key={method.value}
@@ -54,7 +49,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
       <Form.Dropdown
         id="interval"
         title="Check Interval"
-        defaultValue="60"
         {...itemProps.interval}
       >
         {FORM_OPTIONS.intervals.map((interval) => (
@@ -69,7 +63,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
       <Form.Dropdown
         id="timeout"
         title="Timeout (seconds)"
-        defaultValue="7000"
         {...itemProps.timeout}
       >
         {FORM_OPTIONS.timeouts.map((timeout) => (
@@ -84,7 +77,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
       <Form.TagPicker
         id="regions"
         title="Regions"
-        defaultValue={["as-jpn-hnd"]}
         info="Select one or more regions to monitor from"
         {...itemProps.regions}
       >
@@ -100,7 +92,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
       <Form.Dropdown
         id="incidentConfirmations"
         title="Incident Confirmations"
-        defaultValue="1"
         {...itemProps.incidentConfirmations}
       >
         {FORM_OPTIONS.confirmations.map((confirmation) => (
@@ -115,7 +106,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
       <Form.Dropdown
         id="recoveryConfirmations"
         title="Recovery Confirmations"
-        defaultValue="1"
         {...itemProps.recoveryConfirmations}
       >
         {FORM_OPTIONS.confirmations.map((confirmation) => (
@@ -155,7 +145,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
         id="followRedirects"
         title="Follow Redirects"
         label="Follow Redirects"
-        defaultValue={true}
         {...itemProps.followRedirects}
       />
 
@@ -163,7 +152,6 @@ export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
         id="tlsSkipVerify"
         title="Skip TLS Verification"
         label="Skip TLS Verification"
-        defaultValue={false}
         {...itemProps.tlsSkipVerify}
       />
     </>
