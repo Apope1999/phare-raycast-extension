@@ -31,15 +31,9 @@ export function useCreateMonitor(apiKey: string) {
       }
 
       setIsLoading(true);
-      try {
-        const monitorData = transformFormDataToMonitor(values);
-        await createMonitor(monitorData);
-      } catch (error) {
-        // Error handling is already done in createMonitor
-        console.error("Failed to create monitor:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      const monitorData = transformFormDataToMonitor(values);
+      await createMonitor(monitorData);
+      setIsLoading(false);
     },
     validation: {
       name: FormValidation.Required,
