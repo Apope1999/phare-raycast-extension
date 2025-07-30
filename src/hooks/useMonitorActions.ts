@@ -26,10 +26,17 @@ export function useMonitorActions(apiKey: string) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
+        const errorMessage =
           errorData.message ||
-            `HTTP ${response.status}: ${response.statusText}`,
-        );
+          `HTTP ${response.status}: ${response.statusText}`;
+
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Failed to Create Monitor",
+          message: errorMessage,
+        });
+
+        throw new Error(errorMessage);
       }
 
       const monitor = await response.json();
@@ -53,41 +60,59 @@ export function useMonitorActions(apiKey: string) {
 
       return monitor;
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Failed to Create Monitor",
-        message: errorMessage,
-      });
+      // Only show toast if it's not already shown (for API errors)
+      if (!(error instanceof Error && error.message.includes("HTTP"))) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error occurred";
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Failed to Create Monitor",
+          message: errorMessage,
+        });
+      }
       throw error;
     }
   };
 
   const pauseMonitor = async (monitorId: number, monitorName: string) => {
     try {
-      await mutate(
-        fetch(`${API_BASE_URL}/monitors/${monitorId}/pause`, {
+      const response = await fetch(
+        `${API_BASE_URL}/monitors/${monitorId}/pause`,
+        {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
-        }),
-        {
-          optimisticUpdate: (data) => {
-            if (!data?.data) return data;
-            return {
-              ...data,
-              data: data.data.map((monitor) =>
-                monitor.id === monitorId
-                  ? { ...monitor, paused: true }
-                  : monitor,
-              ),
-            };
-          },
         },
       );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage =
+          errorData.message ||
+          `HTTP ${response.status}: ${response.statusText}`;
+
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Pause Failed",
+          message: errorMessage,
+        });
+
+        throw new Error(errorMessage);
+      }
+
+      await mutate(Promise.resolve(response), {
+        optimisticUpdate: (data) => {
+          if (!data?.data) return data;
+          return {
+            ...data,
+            data: data.data.map((monitor) =>
+              monitor.id === monitorId ? { ...monitor, paused: true } : monitor,
+            ),
+          };
+        },
+      });
 
       await showToast({
         style: Toast.Style.Success,
@@ -95,41 +120,61 @@ export function useMonitorActions(apiKey: string) {
         message: `Successfully paused "${monitorName}"`,
       });
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to pause monitor";
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Pause Failed",
-        message: errorMessage,
-      });
+      // Only show toast if it's not already shown (for API errors)
+      if (!(error instanceof Error && error.message.includes("HTTP"))) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to pause monitor";
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Pause Failed",
+          message: errorMessage,
+        });
+      }
       throw error;
     }
   };
 
   const resumeMonitor = async (monitorId: number, monitorName: string) => {
     try {
-      await mutate(
-        fetch(`${API_BASE_URL}/monitors/${monitorId}/resume`, {
+      const response = await fetch(
+        `${API_BASE_URL}/monitors/${monitorId}/resume`,
+        {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
-        }),
-        {
-          optimisticUpdate: (data) => {
-            if (!data?.data) return data;
-            return {
-              ...data,
-              data: data.data.map((monitor) =>
-                monitor.id === monitorId
-                  ? { ...monitor, paused: false }
-                  : monitor,
-              ),
-            };
-          },
         },
       );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage =
+          errorData.message ||
+          `HTTP ${response.status}: ${response.statusText}`;
+
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Resume Failed",
+          message: errorMessage,
+        });
+
+        throw new Error(errorMessage);
+      }
+
+      await mutate(Promise.resolve(response), {
+        optimisticUpdate: (data) => {
+          if (!data?.data) return data;
+          return {
+            ...data,
+            data: data.data.map((monitor) =>
+              monitor.id === monitorId
+                ? { ...monitor, paused: false }
+                : monitor,
+            ),
+          };
+        },
+      });
 
       await showToast({
         style: Toast.Style.Success,
@@ -137,37 +182,54 @@ export function useMonitorActions(apiKey: string) {
         message: `Successfully resumed "${monitorName}"`,
       });
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to resume monitor";
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Resume Failed",
-        message: errorMessage,
-      });
+      // Only show toast if it's not already shown (for API errors)
+      if (!(error instanceof Error && error.message.includes("HTTP"))) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to resume monitor";
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Resume Failed",
+          message: errorMessage,
+        });
+      }
       throw error;
     }
   };
 
   const deleteMonitor = async (monitorId: number, monitorName: string) => {
     try {
-      await mutate(
-        fetch(`${API_BASE_URL}/monitors/${monitorId}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-        }),
-        {
-          optimisticUpdate: (data) => {
-            if (!data?.data) return data;
-            return {
-              ...data,
-              data: data.data.filter((monitor) => monitor.id !== monitorId),
-            };
-          },
+      const response = await fetch(`${API_BASE_URL}/monitors/${monitorId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
         },
-      );
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage =
+          errorData.message ||
+          `HTTP ${response.status}: ${response.statusText}`;
+
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Delete Failed",
+          message: errorMessage,
+        });
+
+        throw new Error(errorMessage);
+      }
+
+      await mutate(Promise.resolve(response), {
+        optimisticUpdate: (data) => {
+          if (!data?.data) return data;
+          return {
+            ...data,
+            data: data.data.filter((monitor) => monitor.id !== monitorId),
+          };
+        },
+      });
 
       await showToast({
         style: Toast.Style.Success,
@@ -175,13 +237,16 @@ export function useMonitorActions(apiKey: string) {
         message: `Successfully deleted "${monitorName}"`,
       });
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to delete monitor";
-      await showToast({
-        style: Toast.Style.Failure,
-        title: "Delete Failed",
-        message: errorMessage,
-      });
+      // Only show toast if it's not already shown (for API errors)
+      if (!(error instanceof Error && error.message.includes("HTTP"))) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to delete monitor";
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Delete Failed",
+          message: errorMessage,
+        });
+      }
       throw error;
     }
   };

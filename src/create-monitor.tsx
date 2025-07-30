@@ -5,7 +5,7 @@ import { CreateMonitorForm } from "./components/CreateMonitorForm";
 
 export default function Command() {
   const { phareApiKey } = getPreferenceValues<Preferences>();
-  const { handleSubmit, isLoading } = useCreateMonitor(phareApiKey);
+  const { handleSubmit, itemProps, isLoading } = useCreateMonitor(phareApiKey);
 
   return (
     <Form
@@ -16,7 +16,7 @@ export default function Command() {
         </ActionPanel>
       }
     >
-      <CreateMonitorForm />
+      <CreateMonitorForm itemProps={itemProps} />
     </Form>
   );
 }

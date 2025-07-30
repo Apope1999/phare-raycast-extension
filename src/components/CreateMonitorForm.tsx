@@ -1,18 +1,47 @@
 import { Form } from "@raycast/api";
 import { FORM_OPTIONS } from "../utils/monitorUtils";
 
-export function CreateMonitorForm() {
+interface CreateMonitorFormProps {
+  itemProps: {
+    name: Record<string, unknown>;
+    url: Record<string, unknown>;
+    method: Record<string, unknown>;
+    interval: Record<string, unknown>;
+    timeout: Record<string, unknown>;
+    regions: Record<string, unknown>;
+    incidentConfirmations: Record<string, unknown>;
+    recoveryConfirmations: Record<string, unknown>;
+    statusCodeAssertion: Record<string, unknown>;
+    keyword: Record<string, unknown>;
+    userAgentSecret: Record<string, unknown>;
+    followRedirects: Record<string, unknown>;
+    tlsSkipVerify: Record<string, unknown>;
+  };
+}
+
+export function CreateMonitorForm({ itemProps }: CreateMonitorFormProps) {
   return (
     <>
       <Form.TextField
         id="name"
         title="Monitor Name"
         placeholder="My Website Monitor"
+        {...itemProps.name}
       />
 
-      <Form.TextField id="url" title="URL" placeholder="https://example.com" />
+      <Form.TextField
+        id="url"
+        title="URL"
+        placeholder="https://example.com"
+        {...itemProps.url}
+      />
 
-      <Form.Dropdown id="method" title="HTTP Method" defaultValue="GET">
+      <Form.Dropdown
+        id="method"
+        title="HTTP Method"
+        defaultValue="GET"
+        {...itemProps.method}
+      >
         {FORM_OPTIONS.methods.map((method) => (
           <Form.Dropdown.Item
             key={method.value}
@@ -22,7 +51,12 @@ export function CreateMonitorForm() {
         ))}
       </Form.Dropdown>
 
-      <Form.Dropdown id="interval" title="Check Interval" defaultValue="60">
+      <Form.Dropdown
+        id="interval"
+        title="Check Interval"
+        defaultValue="60"
+        {...itemProps.interval}
+      >
         {FORM_OPTIONS.intervals.map((interval) => (
           <Form.Dropdown.Item
             key={interval.value}
@@ -32,7 +66,12 @@ export function CreateMonitorForm() {
         ))}
       </Form.Dropdown>
 
-      <Form.Dropdown id="timeout" title="Timeout (seconds)" defaultValue="7000">
+      <Form.Dropdown
+        id="timeout"
+        title="Timeout (seconds)"
+        defaultValue="7000"
+        {...itemProps.timeout}
+      >
         {FORM_OPTIONS.timeouts.map((timeout) => (
           <Form.Dropdown.Item
             key={timeout.value}
@@ -47,6 +86,7 @@ export function CreateMonitorForm() {
         title="Regions"
         defaultValue={["as-jpn-hnd"]}
         info="Select one or more regions to monitor from"
+        {...itemProps.regions}
       >
         {FORM_OPTIONS.regions.map((region) => (
           <Form.TagPicker.Item
@@ -61,6 +101,7 @@ export function CreateMonitorForm() {
         id="incidentConfirmations"
         title="Incident Confirmations"
         defaultValue="1"
+        {...itemProps.incidentConfirmations}
       >
         {FORM_OPTIONS.confirmations.map((confirmation) => (
           <Form.Dropdown.Item
@@ -75,6 +116,7 @@ export function CreateMonitorForm() {
         id="recoveryConfirmations"
         title="Recovery Confirmations"
         defaultValue="1"
+        {...itemProps.recoveryConfirmations}
       >
         {FORM_OPTIONS.confirmations.map((confirmation) => (
           <Form.Dropdown.Item
@@ -90,6 +132,7 @@ export function CreateMonitorForm() {
         title="Status Code Assertion"
         placeholder="2xx,30x,418"
         info="Comma-separated status codes to consider as success"
+        {...itemProps.statusCodeAssertion}
       />
 
       <Form.TextField
@@ -97,6 +140,7 @@ export function CreateMonitorForm() {
         title="Keyword Check"
         placeholder="pong"
         info="Optional keyword to search for in response body"
+        {...itemProps.keyword}
       />
 
       <Form.TextField
@@ -104,6 +148,7 @@ export function CreateMonitorForm() {
         title="User Agent Secret"
         placeholder="definitely-not-a-bot"
         info="Optional custom user agent string"
+        {...itemProps.userAgentSecret}
       />
 
       <Form.Checkbox
@@ -111,6 +156,7 @@ export function CreateMonitorForm() {
         title="Follow Redirects"
         label="Follow Redirects"
         defaultValue={true}
+        {...itemProps.followRedirects}
       />
 
       <Form.Checkbox
@@ -118,6 +164,7 @@ export function CreateMonitorForm() {
         title="Skip TLS Verification"
         label="Skip TLS Verification"
         defaultValue={false}
+        {...itemProps.tlsSkipVerify}
       />
     </>
   );

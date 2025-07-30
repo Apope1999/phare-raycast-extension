@@ -75,45 +75,6 @@ export function formatSuccessAssertions(assertions: Assertion[]): string {
     .join(", ");
 }
 
-// Form validation functions
-export function validateMonitorForm(values: {
-  name: string;
-  url: string;
-  [key: string]: unknown;
-}): { isValid: boolean; error?: string } {
-  if (!values.name || !values.url) {
-    return {
-      isValid: false,
-      error: "Please fill in the monitor name and URL",
-    };
-  }
-
-  if (!values.name.trim()) {
-    return {
-      isValid: false,
-      error: "Monitor name cannot be empty",
-    };
-  }
-
-  if (!values.url.trim()) {
-    return {
-      isValid: false,
-      error: "URL cannot be empty",
-    };
-  }
-
-  try {
-    new URL(values.url);
-  } catch {
-    return {
-      isValid: false,
-      error: "Please enter a valid URL",
-    };
-  }
-
-  return { isValid: true };
-}
-
 // Form data transformation
 export function transformFormDataToMonitor(values: {
   name: string;
