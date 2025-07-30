@@ -145,11 +145,7 @@ export default function Command() {
         defaultValue="60"
       />
 
-      <Form.Dropdown
-        id="timeout"
-        title="Timeout (milliseconds)"
-        defaultValue="7000"
-      >
+      <Form.Dropdown id="timeout" title="Timeout (seconds)" defaultValue="7000">
         <Form.Dropdown.Item value="1000" title="1 second" />
         <Form.Dropdown.Item value="2000" title="2 seconds" />
         <Form.Dropdown.Item value="3000" title="3 seconds" />
