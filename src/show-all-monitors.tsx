@@ -1,5 +1,4 @@
 import { List, getPreferenceValues, Icon } from "@raycast/api";
-import { Preferences } from "./types";
 import { useMonitors } from "./hooks/useMonitors";
 import { groupMonitorsByStatus } from "./utils/monitorUtils";
 import { MonitorItem } from "./components/MonitorItem";
