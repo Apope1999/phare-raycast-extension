@@ -1,4 +1,4 @@
-import { ActionPanel, Action, Icon } from "@raycast/api";
+import { ActionPanel, Action, Icon, Keyboard } from "@raycast/api";
 import { Monitor } from "../types";
 import { useMonitorActions } from "../hooks/useMonitorActions";
 import { getEffectiveStatus } from "../utils/monitorUtils";
@@ -54,7 +54,7 @@ export function MonitorActions({ monitor, apiKey }: MonitorActionsProps) {
         title="Delete Monitor"
         icon={Icon.Trash}
         style={Action.Style.Destructive}
-        shortcut={{ modifiers: ["cmd", "shift"], key: "d" }}
+        shortcut={Keyboard.Shortcut.Common.Remove}
         onAction={handleDelete}
       />
     </ActionPanel>
