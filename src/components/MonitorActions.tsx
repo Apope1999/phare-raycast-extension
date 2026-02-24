@@ -9,8 +9,7 @@ interface MonitorActionsProps {
 }
 
 export function MonitorActions({ monitor, apiKey }: MonitorActionsProps) {
-  const { pauseMonitor, resumeMonitor, deleteMonitor, isLoading } =
-    useMonitorActions(apiKey);
+  const { pauseMonitor, resumeMonitor, deleteMonitor, isLoading } = useMonitorActions(apiKey);
 
   const handlePause = async () => {
     if (isLoading) return;

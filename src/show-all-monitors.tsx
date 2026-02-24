@@ -32,11 +32,7 @@ export default function Command() {
         items.length > 0 ? (
           <List.Section key={section} title={section}>
             {items.map((monitor) => (
-              <MonitorItem
-                key={`${monitor.id}-${monitor.status}`}
-                monitor={monitor}
-                apiKey={phareApiKey}
-              />
+              <MonitorItem key={`${monitor.id}-${monitor.status}`} monitor={monitor} apiKey={phareApiKey} />
             ))}
           </List.Section>
         ) : null,
